@@ -1,6 +1,9 @@
 # Steam Games List
 This is step 1 of a larger idea/project I'm trying to make, final product should be a "complete" games list, getting games from Steam, GOG and Uplay all in one list!
 
+## Demo Link
+[Here is a link to my own personal page with my personal games list.](http://thomas.vanderven.se/games)
+
 ## What's there?
 Currently if you input a Steam webAPI key and a Steam64 ID into the config.php file (found in the config folder) the page will generate a list of all games (Not including games with Beta and/or Test in their name).
 
