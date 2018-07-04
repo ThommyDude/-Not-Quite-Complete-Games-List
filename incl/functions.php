@@ -1,25 +1,41 @@
 <?php
     $config = require './config/config.php';
     
-    function loadGames()
+    function loadSteam()
     {
-        if( (!file_exists("./steam_cache/steam_games.json")) || (file_exists("./steam_cache/steam_games.json") && time() - filemtime("./steam_cache/steam_games.json") > 3600) )
+        global $config;
+        
+        if($config["testing"] == true)
+        {
+            $jsongames = json_decode(file_get_contents("./steam_cache/steam_games.json"), true);
+            $jsonlatest = json_decode(file_get_contents("./steam_cache/steam_latest.json"), true);
+        }
+        elseif( (!file_exists("./steam_cache/steam_games.json")) || (file_exists("./steam_cache/steam_games.json") && time() - filemtime("./steam_cache/steam_games.json") > 3600) )
         {
             file_put_contents("./steam_cache/steam_games.json", file_get_contents('http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=' . $config["steam_api_key"] . '&input_json={"steamid":"' . $config["steam_user_id"] . '","include_appinfo":true,"include_played_free_games":true}&format=json'));
-            $jsondata = json_decode(file_get_contents("./steam_cache/steam_games.json"), true);
+            file_put_contents("./steam_cache/steam_latest.json", file_get_contents('http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=' . $config["steam_api_key"] . '&input_json={"steamid":"' . $config["steam_user_id"] . '","count":3}&format=json'));
+            $jsongames = json_decode(file_get_contents("./steam_cache/steam_games.json"), true);
+            $jsonlatest = json_decode(file_get_contents("./steam_cache/steam_latest.json"), true);
         }
         else
         {
-            $jsondata = json_decode(file_get_contents("./steam_cache/steam_games.json"), true);
+            $jsongames = json_decode(file_get_contents("./steam_cache/steam_games.json"), true);
+            $jsonlatest = json_decode(file_get_contents("./steam_cache/steam_latest.json"), true);
         }
         
-        $games = $jsondata["response"]["games"];
-        usort($games, "cmp");
+        $games = $jsongames["response"]["games"];
+        usort($games, "alphabeticSort");
 
-        return $games;
+        $latest = $jsonlatest["response"]["games"];
+        usort($latest, "playtimeSort");
+        
+        $data["games"] = $games;
+        $data["latest"] = $latest;
+
+        return $data;
     }
 
-    function cmp($a, $b)
+    function alphabeticSort($a, $b)
     {
         $regex = "\p{Ll}\p{Lu}\p{Nl}\p{Nd}'";
         
@@ -37,4 +53,12 @@
         }
 
         return strcoll($nameA, $nameB);
+    }
+
+    function playtimeSort($a, $b)
+    {
+        $a = $a["playtime_2weeks"];
+        $b = $b["playtime_2weeks"];
+        
+        return $b <=> $a;
     }
