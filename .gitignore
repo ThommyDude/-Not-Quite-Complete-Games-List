@@ -1,3 +1,4 @@
 config/config.php
 steam_games.json
 steam_cache/steam_latest.json
+steam_cache/steam_profile.json
