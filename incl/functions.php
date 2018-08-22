@@ -5,6 +5,16 @@
     {
         global $config;
         
+        if(!file_exists("./steam_cache/steam_profile.json") || (file_exists("./steam_cache/steam_profile.json") && time() - filemtime("./steam_cache/steam_games.json") > 300))
+        {
+            file_put_contents("./steam_cache/steam_profile.json", file_get_contents('http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=' . $config["steam_api_key"] . '&steamids=' . $config["steam_user_id"] . '&format=json'));
+            $jsonprofile = json_decode(file_get_contents("./steam_cache/steam_profile.json"), true);
+        }
+        else
+        {
+            $jsonprofile = json_decode(file_get_contents("./steam_cache/steam_profile.json"), true);
+        }
+
         if($config["testing"] == true)
         {
             $jsongames = json_decode(file_get_contents("./steam_cache/steam_games.json"), true);
@@ -23,16 +33,52 @@
             $jsonlatest = json_decode(file_get_contents("./steam_cache/steam_latest.json"), true);
         }
         
+        $profile = $jsonprofile["response"]["players"][0];
+
         $games = $jsongames["response"]["games"];
         usort($games, "alphabeticSort");
 
         $latest = $jsonlatest["response"]["games"];
         usort($latest, "playtimeSort");
         
+        $data["profile"] = $profile;
         $data["games"] = $games;
         $data["latest"] = $latest;
 
         return $data;
+    }
+
+    function getStatus($x)
+    {
+        switch($x)
+        {
+            case 0:
+                return ["Offline", "red"];
+                break;
+            case 1:
+                return ["Online", "green"];
+                break;
+            case 2:
+                return ["Busy", "yellow"];
+                break;
+            case 3:
+                return ["Away", "orange"];
+                break;
+            case 4:
+                return ["Snooze", "darkblue"];
+                break;
+            case 5:
+                // return ["Looking to Trade", ""];
+                return ["Online", "green"];
+                break;
+            case 6:
+                // return ["Looking to Play", ""];
+                return ["Online", "green"];
+                break;
+            default:
+                return "Offline";
+                break;
+        }
     }
 
     function alphabeticSort($a, $b)
