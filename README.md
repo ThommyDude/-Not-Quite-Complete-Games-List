@@ -11,6 +11,10 @@ _*Update #1*_
 Now also showing the 3 last played games in order of most to least playtime of the last 2 weeks.
 I'm suprised by the fact that there isn't just a "lastplayed" entry holding the date and/or a timestamp so you could actually order them in order of playing them, instead of just the amount of time... Valve should really get on that!
 
+_*Update #2*_
+There is now a small profile section. This is done by downloading another JSON file containing information about your profile.
+If the profile is set to public and you're currently in-game a small section will be created showing the game's logo and name.
+
 ### So why?
 Mainly just to see if I could, and getting some experience working a bit more with API's created by other people.
 
