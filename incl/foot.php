@@ -1,6 +1,16 @@
         <script>
             $().ready(function()
             {
+                <?php
+                    usort($games, "alphabeticSort");
+                    $jsGames = json_encode($games);
+                    echo('var alpGames = ' . $jsGames . ';');
+                    
+                    usort($games, "totalPlaytimeSort");
+                    $jsGames = json_encode($games);
+                    echo('var ptGames = ' . $jsGames . ';');
+                ?>
+                
                 function updateListView(newGames)
                 {
                     var ajaxGames;
@@ -10,7 +20,7 @@
                     }
                     else
                     {
-                        ajaxGames = <?php echo(json_encode($games)); ?>;
+                        ajaxGames = alpGames;
                     }
                     
                     $.ajax(
@@ -39,11 +49,6 @@
                 
                 $("#alpha").on("click", function()
                 {
-                    <?php
-                        usort($games, "alphabeticSort");
-                        $jsGames = json_encode($games);
-                        echo('var alpGames = ' . $jsGames . ';');
-                    ?>
                     updateListView(alpGames);
                     $("#alpha").hide();
                     $("#playtime").show();
@@ -51,11 +56,6 @@
 
                 $("#playtime").on("click", function()
                 {
-                    <?php
-                        usort($games, "totalPlaytimeSort");
-                        $jsGames = json_encode($games);
-                        echo('var ptGames = ' . $jsGames . ';');
-                    ?>
                     updateListView(ptGames);
                     $("#alpha").show();
                     $("#playtime").hide();

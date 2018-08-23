@@ -36,7 +36,6 @@
         $profile = $jsonprofile["response"]["players"][0];
 
         $games = $jsongames["response"]["games"];
-        usort($games, "alphabeticSort");
 
         $latest = $jsonlatest["response"]["games"];
         usort($latest, "playtimeSort");
