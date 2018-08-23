@@ -53,16 +53,16 @@
         switch($x)
         {
             case 0:
-                return ["Offline", "red"];
+                return ["Offline", "black"];
                 break;
             case 1:
                 return ["Online", "green"];
                 break;
             case 2:
-                return ["Busy", "yellow"];
+                return ["Busy", "orange"];
                 break;
             case 3:
-                return ["Away", "orange"];
+                return ["Away", "red"];
                 break;
             case 4:
                 return ["Snooze", "darkblue"];
@@ -76,7 +76,7 @@
                 return ["Online", "green"];
                 break;
             default:
-                return "Offline";
+                return ["Offline", "black"];
                 break;
         }
     }
@@ -106,5 +106,13 @@
         $a = $a["playtime_2weeks"];
         $b = $b["playtime_2weeks"];
         
+        return $b <=> $a;
+    }
+
+    function totalPlaytimeSort($a, $b)
+    {
+        $a = $a["playtime_forever"];
+        $b = $b["playtime_forever"];
+
         return $b <=> $a;
     }
