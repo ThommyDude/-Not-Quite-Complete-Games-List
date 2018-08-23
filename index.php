@@ -81,7 +81,7 @@
                         echo('<h6 class="card-subtitle">' . $game['appid'] . '</h6>');
                         echo('</div>');
                         echo('<div class="card-footer text-muted">');
-                        echo($latetime);
+                        echo('<span href="#" data-toggle="tooltip" title="' . $game["playtime_2weeks"] . ' Minutes">' . $latetime . '</span>');
                         echo('</div>');
                         echo('</div>');
                     }

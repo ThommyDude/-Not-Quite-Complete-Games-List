@@ -56,6 +56,7 @@
                             {
                                 $("#gamesContainer").empty();
                             }
+                            $('[data-toggle="tooltip"]').tooltip();
                         });
                     }
                 }
