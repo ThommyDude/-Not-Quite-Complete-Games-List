@@ -54,6 +54,23 @@
                 {
                     foreach($latest as $game)
                     {
+                        if($game["playtime_2weeks"] < 60)
+                        {
+                            $latetime = $game["playtime_2weeks"] . " Minutes";
+                        }
+                        else
+                        {
+                            $rndtime = round($game["playtime_2weeks"]/60);
+                            if($rndtime == 1)
+                            {
+                                $latetime = "Around " . $rndtime . " hour";
+                            }
+                            else
+                            {
+                                $latetime = "Around " . $rndtime . " hours";
+                            }
+                        }
+
                         echo('<div class="card text-center" style="min-width:184px; max-width: calc(90% / 3); margin-bottom: 20px;">');
                         if($game["img_logo_url"] !== "")
                         {
@@ -62,6 +79,9 @@
                         echo('<div class="card-body">');
                         echo('<h4 class="card-title">' . $game['name'] . '</h4>');
                         echo('<h6 class="card-subtitle">' . $game['appid'] . '</h6>');
+                        echo('</div>');
+                        echo('<div class="card-footer text-muted">');
+                        echo($latetime);
                         echo('</div>');
                         echo('</div>');
                     }
