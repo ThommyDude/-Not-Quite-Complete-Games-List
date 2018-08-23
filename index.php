@@ -46,18 +46,25 @@
         <h3>Last 3 games I played (ordered by playtime in the last 2 weeks)</h3>
         <div id="latestContainer" class="card-deck" style="width: 90%; margin: 5%;">
             <?php
-                foreach($latest as $game)
+                if($latest === false)
                 {
-                    echo('<div class="card text-center" style="min-width:184px; max-width: calc(90% / 3); margin-bottom: 20px;">');
-                    if($game["img_logo_url"] !== "")
+                    echo("<p>Hasn't played anything in the last 2 weeks!</p>");
+                }
+                else
+                {
+                    foreach($latest as $game)
                     {
-                        echo('<img class="card-img-top" src="http://media.steampowered.com/steamcommunity/public/images/apps/' . $game["appid"] . '/' . $game["img_logo_url"] . '.jpg" alt="img-top">');
+                        echo('<div class="card text-center" style="min-width:184px; max-width: calc(90% / 3); margin-bottom: 20px;">');
+                        if($game["img_logo_url"] !== "")
+                        {
+                            echo('<img class="card-img-top" src="http://media.steampowered.com/steamcommunity/public/images/apps/' . $game["appid"] . '/' . $game["img_logo_url"] . '.jpg" alt="img-top">');
+                        }
+                        echo('<div class="card-body">');
+                        echo('<h4 class="card-title">' . $game['name'] . '</h4>');
+                        echo('<h6 class="card-subtitle">' . $game['appid'] . '</h6>');
+                        echo('</div>');
+                        echo('</div>');
                     }
-                    echo('<div class="card-body">');
-                    echo('<h4 class="card-title">' . $game['name'] . '</h4>');
-                    echo('<h6 class="card-subtitle">' . $game['appid'] . '</h6>');
-                    echo('</div>');
-                    echo('</div>');
                 }
             ?>
         </div>

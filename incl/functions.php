@@ -35,10 +35,24 @@
         
         $profile = $jsonprofile["response"]["players"][0];
 
-        $games = $jsongames["response"]["games"];
+        if($jsongames["response"]["game_count"] >= 1)
+        {
+            $games = $jsongames["response"]["games"];
+        }
+        else
+        {
+            $games = false;
+        }
 
-        $latest = $jsonlatest["response"]["games"];
-        usort($latest, "playtimeSort");
+        if($jsonlatest["response"]["total_count"] >= 1)
+        {
+            $latest = $jsonlatest["response"]["games"];
+            usort($latest, "playtimeSort");
+        }
+        else
+        {
+            $latest = false;
+        }
         
         $data["profile"] = $profile;
         $data["games"] = $games;

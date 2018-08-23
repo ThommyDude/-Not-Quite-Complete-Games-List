@@ -2,10 +2,19 @@
             $().ready(function()
             {
                 <?php
+                    if ($games === false)
+                    {
+                        echo('var skip = true;');
+                    }
+                    else
+                    {
+                        echo('var skip = false;');
+                    }
+                    
                     usort($games, "alphabeticSort");
                     $jsGames = json_encode($games);
                     echo('var alpGames = ' . $jsGames . ';');
-                    
+
                     usort($games, "totalPlaytimeSort");
                     $jsGames = json_encode($games);
                     echo('var ptGames = ' . $jsGames . ';');
@@ -13,35 +22,42 @@
                 
                 function updateListView(newGames)
                 {
-                    var ajaxGames;
-                    if(newGames)
+                    if(skip === true)
                     {
-                        ajaxGames = newGames;
+                        $("#gamesContainer").html("<p>This account has no games in it's library</p>");
                     }
                     else
                     {
-                        ajaxGames = alpGames;
-                    }
-                    
-                    $.ajax(
-                    {
-                        method: "POST",
-                        url: "./ajax/createListHtml.php",
-                        data: {
-                            gamesarr: ajaxGames
-                        }
-                    })
-                    .done(function(resp)
-                    {
-                        if(resp !== "false" && resp !== "")
+                        var ajaxGames;
+                        if(newGames)
                         {
-                            $("#gamesContainer").html(resp);
+                            ajaxGames = newGames;
                         }
                         else
                         {
-                            $("#gamesContainer").empty();
+                            ajaxGames = alpGames;
                         }
-                    });
+                        
+                        $.ajax(
+                        {
+                            method: "POST",
+                            url: "./ajax/createListHtml.php",
+                            data: {
+                                gamesarr: ajaxGames
+                            }
+                        })
+                        .done(function(resp)
+                        {
+                            if(resp !== "false" && resp !== "")
+                            {
+                                $("#gamesContainer").html(resp);
+                            }
+                            else
+                            {
+                                $("#gamesContainer").empty();
+                            }
+                        });
+                    }
                 }
 
                 updateListView();
